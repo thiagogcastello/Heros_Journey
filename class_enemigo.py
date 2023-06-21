@@ -94,7 +94,7 @@ class Enemigo():
             self.atacando = False
         
     def cooldown(self):
-        if self.cool_down_ataque >= 10:
+        if self.cool_down_ataque >= 50:
             self.cool_down_ataque = 0
         elif self.cool_down_ataque > 0:
             self.cool_down_ataque += 1 
