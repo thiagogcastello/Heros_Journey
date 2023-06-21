@@ -27,6 +27,11 @@ def nivel_1():
     #ICONO
     pygame.display.set_caption("Heroe's Journey")
 
+    #BOTONES PAUSA
+    ancho_boton = 500
+    alto_boton = 60
+    posicion_x = medidas_pantalla[0] // 2 - ancho_boton // 2
+    posicion_2 = medidas_pantalla[1] - alto_boton - 80
 
     #MUSICA
     pygame.mixer.music.load("Heros_journey\\recursos\sonidos\Adventure.wav")
@@ -175,14 +180,34 @@ def nivel_1():
     vida_enemigo_3 = 26
     enemigo_3 = Enemigo(tamaño_enemigo_3,diccionario_animaciones_enemigo,velocidad_enemigo_3, p_5, puntuacion_enemigo_3, vida_enemigo_3)
     
-    lista_enemigos = [enemigo_1, enemigo_2, enemigo_3]
+    velocidad_enemigo_4 = 5
+    tamaño_enemigo_4 = (85,65)
+    puntuacion_enemigo_4 = 15
+    vida_enemigo_4 = 20
+    enemigo_4 = Enemigo(tamaño_enemigo_4,diccionario_animaciones_enemigo,velocidad_enemigo_4, p_7, puntuacion_enemigo_4, vida_enemigo_4)
+    
+    velocidad_enemigo_5 = 3
+    tamaño_enemigo_5 = (85,65)
+    puntuacion_enemigo_5 = 15
+    vida_enemigo_5 = 30
+    enemigo_5 = Enemigo(tamaño_enemigo_5,diccionario_animaciones_enemigo,velocidad_enemigo_5, p_2, puntuacion_enemigo_5, vida_enemigo_5)
+    
+    velocidad_enemigo_6 = 12
+    tamaño_enemigo_6 = (85,65)
+    puntuacion_enemigo_6 = 16
+    vida_enemigo_6 = 16
+    enemigo_6 = Enemigo(tamaño_enemigo_6,diccionario_animaciones_enemigo,velocidad_enemigo_6, p_11, puntuacion_enemigo_6, vida_enemigo_6)
+    
+    lista_enemigos = [enemigo_1, enemigo_2, enemigo_3, enemigo_4, enemigo_5, enemigo_6]
 
-    pygame.mouse.set_visible(False)
+    
 
     run = True
     while run:
         if not pausa:
+            pygame.mouse.set_visible(False)
             reloj.tick(FPS)
+            pos = pygame.mouse.get_pos()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -199,8 +224,6 @@ def nivel_1():
                             musica_pausada = True
                     elif event.key == pygame.K_ESCAPE:
                         pausa = not pausa
-                elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    print(pygame.mouse.get_pos())
                 elif event.type == timer:
                     secs_in_game += 1
                     
@@ -290,18 +313,43 @@ def nivel_1():
 
             pygame.display.flip()
         else:
+            pygame.mouse.set_visible(True)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         pausa = not pausa
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    if boton_volver.collidepoint(event.pos):
+                        return "menu_principal",0
+                    if boton_reiniciar.collidepoint(event.pos):
+                        return "nivel_1",0
 
             fuente_pausa = pygame.font.Font(ruta_fuente, 72)
             texto_pausa = fuente_pausa.render("Pause", True, (255, 255, 255))
             pantalla.blit(texto_pausa, (ancho_pantalla // 2 -150, alto_pantalla // 2-150))
-            pygame.display.flip()
+
+            tamaño_fuente_boton = 46
+            separacion_botones = 15
+            #boton menu pruncipal
+            boton_volver = pygame.Rect(posicion_x - ancho_boton - separacion_botones + 100, posicion_2, ancho_boton + 40, alto_boton)
+            fuente = pygame.font.Font(ruta_fuente, tamaño_fuente_boton)
+            texto_volver_principal = fuente.render("Volver al menu principal", True, "White")
+            text_rect_volver_principal = texto_volver_principal.get_rect(center=(medidas_pantalla[0] // 2 - 400, posicion_2 + alto_boton // 2))
+            pantalla.blit(texto_volver_principal, text_rect_volver_principal)
+            
+
+            #reiniciar nivel
+            boton_reiniciar = pygame.Rect(posicion_x  + separacion_botones + 290, posicion_2, ancho_boton - 200, alto_boton)
+            fuente = pygame.font.Font(ruta_fuente, tamaño_fuente_boton)
+            texto_reiniciar = fuente.render("Reiniciar nivel", True, "White")
+            text_rect_reiniciar = texto_reiniciar.get_rect(center=(medidas_pantalla[0] // 2 + 200, posicion_2 + alto_boton // 2))
+            pantalla.blit(texto_reiniciar, text_rect_reiniciar)
+
+            pygame.display.update()
 
     pygame.quit()
 
-nivel_1()
+# nivel_1()
